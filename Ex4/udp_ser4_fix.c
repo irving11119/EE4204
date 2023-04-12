@@ -67,7 +67,7 @@ void readsocket(int sockfd)
     char packetlastbyte; // Tracks the last byte of the latest packet received
     do
     {
-        // varying batch protocol
+        // fixed batch protocol
         for (int i = 0; i < multiples; i++)
         {
             // Read incoming packet (recvfrom will block until data is received)

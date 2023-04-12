@@ -39,9 +39,7 @@ int main(int argc, char *argv[])
 
 void sendsocket(int sockfd, struct sockaddr *server_addr, socklen_t server_addrlen)
 {
-    //--------------------------------------------//
-    // buffer used to contain the outgoing packet //
-    //--------------------------------------------//
+
     char packet[DATALEN];
 
     // Open file for reading

@@ -67,7 +67,7 @@ void readsocket(int sockfd)
 	char packetlastbyte; // Tracks the last byte of the latest packet received
 	do
 	{
-		// varying batch protocol
+		// varying batch size
 		for (int i = 0; i < multiples; i++)
 		{
 			// Read incoming packet (recvfrom will block until data is received)
@@ -78,17 +78,23 @@ void readsocket(int sockfd)
 				exit(1);
 			}
 
-			// Append packet data to filebuffer
+			// add packet
 			memcpy((filebuffer + fileoffset), packet, bytesreceived);
 			fileoffset += bytesreceived;
 			if ((packetlastbyte = packet[bytesreceived - 1]) == 0x4)
 				break;
 		}
 
-		// Acknowledge that packet has been received
 		send_ack(sockfd, &client_addr, client_addrlen, fileoffset);
 
-		multiples = (++multiples % 4 == 0) ? 1 : multiples % 4;
+		if (multiples == 3)
+		{
+			multiples = 1;
+		}
+		else
+		{
+			multiples += 1;
+		}
 	} while (packetlastbyte != 0x4);
 	fileoffset -= 1; // Disregard the last byte of filebuffer because it is the End of Transmission character 0x4
 

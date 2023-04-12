@@ -39,9 +39,7 @@ int main(int argc, char *argv[])
 
 void sendsocket(int sockfd, struct sockaddr *server_addr, socklen_t server_addrlen)
 {
-	//--------------------------------------------//
-	// buffer used to contain the outgoing packet //
-	//--------------------------------------------//
+
 	char packet[DATALEN];
 
 	// Open file for reading
@@ -93,7 +91,16 @@ void sendsocket(int sockfd, struct sockaddr *server_addr, socklen_t server_addrl
 			printf("packet of size %d sent\n", n);
 		}
 		wait_ack(sockfd, server_addr, server_addrlen);
-		multiples = (++multiples % 4 == 0) ? 1 : multiples % 4;
+
+		if (multiples == 3)
+		{
+			multiples = 1;
+		}
+		else
+		{
+			multiples += 1;
+		}
+		// multiples = (++multiples % 4 == 0) ? 1 : multiples % 4;
 	}
 
 	// Get end time
